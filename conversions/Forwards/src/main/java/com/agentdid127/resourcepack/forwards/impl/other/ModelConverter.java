@@ -287,6 +287,8 @@ public class ModelConverter extends Converter {
 
 
             // New Override System for 1.21.4+
+            // Migrate old item "overrides" into the new 1.21.4+ items/ JSON format.
+            // This triggers for any pack converting across the 1.21.4 boundary (from < 1.21.4, to >= 1.21.4).
             if (to >= Util.getVersionProtocol(packConverter.getGson(), "1.21.4")
                     && from < Util.getVersionProtocol(packConverter.getGson(), "1.21.4")) {
 
@@ -301,8 +303,32 @@ public class ModelConverter extends Converter {
                         createCustomModelData(jsonObject, model);
                     }
 
-                    // remove old damages
+                    // remove old overrides from the model json - they are now in the items/ directory
                     jsonObject.remove("overrides");
+                }
+
+                // For item models that have no overrides but are in models/item/, generate a simple
+                // passthrough items/ stub so the item still loads correctly in 1.21.4+
+                String modelPathStr = model.toString().replace("\\", "/");
+                if (modelPathStr.contains("/models/item/") && !jsonObject.has("overrides")) {
+                    if (this.pack != null) {
+                        Path itemsPath = this.pack.getWorkingPath().resolve("assets/minecraft/items");
+                        Path itemsFile = itemsPath.resolve(model.getFileName());
+                        if (!itemsFile.toFile().exists()) {
+                            if (!itemsPath.toFile().exists()) {
+                                itemsPath.toFile().mkdirs();
+                            }
+                            // Get the model reference path from the file path itself
+                            String modelName = model.getFileName().toString().replace(".json", "");
+                            JsonObject stubOut = new JsonObject();
+                            JsonObject stubModel = new JsonObject();
+                            stubModel.addProperty("type", "model");
+                            stubModel.addProperty("model", "minecraft:item/" + modelName);
+                            stubOut.add("model", stubModel);
+                            JsonUtil.writeJson(packConverter.getGson(), itemsFile, stubOut);
+                            Logger.debug("Generated items/ stub for: " + modelName);
+                        }
+                    }
                 }
             }
 

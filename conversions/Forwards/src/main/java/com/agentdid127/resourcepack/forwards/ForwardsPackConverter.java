@@ -86,7 +86,13 @@ public class ForwardsPackConverter extends PackConverter {
         this.registerConverter(new ImageFormatConverter1_20_3(this));
         this.registerConverter(new MapIconSlicerConverter1_20_5(this, from));
         this.registerConverter(new ArmorMoverConverter1_21_2(this));
+        this.registerConverter(new com.agentdid127.resourcepack.forwards.impl.v1_21.EquipmentMoverConverter1_21_4(this));
         this.registerConverter(new PostEffectShadersConverter1_21_2(this));
+        this.registerConverter(new com.agentdid127.resourcepack.forwards.impl.v1_21.textures.EntityTextureConverter1_21_5(this));
+        this.registerConverter(new com.agentdid127.resourcepack.forwards.impl.v1_21.textures.SpawnEggConverter1_21_5(this));
+        this.registerConverter(new com.agentdid127.resourcepack.forwards.impl.v26_1.textures.SaddleTextureConverter26_1(this));
+        this.registerConverter(new com.agentdid127.resourcepack.forwards.impl.v1_21.textures.CelestialTextureConverter1_21_10(this));
+        this.registerConverter(new com.agentdid127.resourcepack.forwards.impl.v1_21.textures.HorseArmorTextureConverter1_21_10(this));
     }
 
     public void runPack(Pack pack) {

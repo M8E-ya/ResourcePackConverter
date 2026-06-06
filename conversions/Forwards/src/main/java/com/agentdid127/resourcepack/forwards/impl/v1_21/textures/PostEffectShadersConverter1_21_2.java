@@ -36,7 +36,11 @@ public class PostEffectShadersConverter1_21_2 extends Converter {
 
     @Override
     public boolean shouldConvert(Gson gson, int from, int to) {
-        return from <= Util.getVersionProtocol(gson, "1.21.1") && to >= Util.getVersionProtocol(gson, "1.21.2");
+        // Only convert the post-effect shader format for packs targeting 1.21.2 to 1.21.3.
+        // For 1.21.4+, shaders are deleted entirely by DeleteShadersConverter1_21_4.
+        return from <= Util.getVersionProtocol(gson, "1.21.1")
+                && to >= Util.getVersionProtocol(gson, "1.21.2")
+                && to < Util.getVersionProtocol(gson, "1.21.4");
     }
 
     @Override

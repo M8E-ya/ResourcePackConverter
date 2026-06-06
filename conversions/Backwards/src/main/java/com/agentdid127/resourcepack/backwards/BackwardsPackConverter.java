@@ -51,7 +51,13 @@ public class BackwardsPackConverter extends PackConverter {
         this.registerConverter(new WaterConverter(this));
         this.registerConverter(new BlockStateConverter(this, from, to));
         this.registerConverter(new ModelConverter(this, from, to));
+        this.registerConverter(new EquipmentMoverConverter1_21_4(this));
         this.registerConverter(new CompassConverter(this, to));
+        this.registerConverter(new SpawnEggConverter1_21_5(this));
+        this.registerConverter(new EntityTextureConverter1_21_5(this));
+        this.registerConverter(new BabyMobConverter26_1(this));
+        this.registerConverter(new CelestialTextureConverter1_21_10(this));
+        this.registerConverter(new HorseArmorTextureConverter1_21_10(this));
     }
 
     public void runPack(Pack pack) {

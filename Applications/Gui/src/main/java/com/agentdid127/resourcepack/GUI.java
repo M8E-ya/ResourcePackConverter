@@ -2,14 +2,16 @@ package com.agentdid127.resourcepack;
 
 import com.agentdid127.resourcepack.backwards.BackwardsPackConverter;
 import com.agentdid127.resourcepack.forwards.ForwardsPackConverter;
+import com.agentdid127.resourcepack.library.utilities.FileUtil;
 import com.agentdid127.resourcepack.library.utilities.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.Strictness;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.file.Path;
@@ -44,6 +46,7 @@ public class GUI extends JPanel {
 
         // Menubar Panel
         final JPanel menuBarPanel = new JPanel();
+
         // Base Version
         JLabel baseVersionLabel = new JLabel();
         baseVersionLabel.setText("Base Version");
@@ -69,7 +72,6 @@ public class GUI extends JPanel {
                 baseVersions.addItem(version);
                 targetVersions.addItem(version);
             }
-
             targetVersions.setSelectedIndex(targetVersions.getItemCount() - 1);
         }
 
@@ -77,7 +79,6 @@ public class GUI extends JPanel {
         JLabel minifyCheckboxLabel = new JLabel();
         minifyCheckboxLabel.setText("Minify");
         menuBarPanel.add(minifyCheckboxLabel);
-
         this.minifyCheckBox = new JCheckBox();
         minifyCheckboxLabel.setLabelFor(this.minifyCheckBox);
         menuBarPanel.add(this.minifyCheckBox);
@@ -86,11 +87,9 @@ public class GUI extends JPanel {
         JLabel lightOptionsLabel = new JLabel();
         lightOptionsLabel.setText("Item Lighting");
         menuBarPanel.add(lightOptionsLabel);
-
         this.lightOptions = new JComboBox<>();
         lightOptionsLabel.setLabelFor(this.lightOptions);
         menuBarPanel.add(this.lightOptions);
-
         Arrays.stream((new String[]{"none", "front", "side"})).forEach(lightOptions::addItem);
 
         // Convert Button
@@ -109,7 +108,6 @@ public class GUI extends JPanel {
                     if (!minify) {
                         packGson = packGson.newBuilder().setPrettyPrinting().create();
                     }
-
                     Path dotPath = Paths.get("./");
                     if (from < to) {
                         new ForwardsPackConverter(packGson, from, to, light, dotPath, true, out).runDir();
@@ -143,7 +141,7 @@ public class GUI extends JPanel {
         frame.setPreferredSize(dimensions);
         frame.setFocusable(true);
         frame.setResizable(false);
-        frame.setLocationRelativeTo(null); // Centers window on screen
+        frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
     }

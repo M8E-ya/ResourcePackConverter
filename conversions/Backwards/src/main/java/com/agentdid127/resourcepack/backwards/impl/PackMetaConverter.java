@@ -61,6 +61,14 @@ public class PackMetaConverter extends Converter {
             }
 
             packObject.addProperty("pack_format", versionInt);
+
+            if (to >= Util.getVersionProtocol(packConverter.getGson(), "1.21.9")) {
+                if (packObject.has("supported_formats")) {
+                    JsonObject supportedFormats = packObject.remove("supported_formats").getAsJsonObject();
+                    packObject.addProperty("min_format", Math.max(supportedFormats.get("min_inclusive").getAsDouble(), 65.0));
+                    packObject.addProperty("max_format", supportedFormats.get("max_inclusive").getAsDouble());
+                }
+            }
             json.add("pack", packObject);
         }
 
